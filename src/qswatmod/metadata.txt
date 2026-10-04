@@ -16,8 +16,8 @@ email=seonggyu.park@brc.tamus.edu
 
 about=This plugin helps link SWAT and MODFLOW model and visualize the results of SWAT-MODFLOW simulation.
 
-tracker=github.com
-repository=https://github.com/spark-brc/QSWATMOD2.git
+tracker=https://github.com/spark-hydro/QSWATMOD2-plugin/issues
+repository=https://github.com/spark-hydro/QSWATMOD2-plugin
 # End of mandatory metadata
 
 # Recommended items:
@@ -26,8 +26,8 @@ repository=https://github.com/spark-brc/QSWATMOD2.git
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=
-homepage=
+tags=swat, modflow, groundwater, hydrology, swat-modflow
+homepage=https://github.com/spark-hydro/QSWATMOD2-plugin
 category=Plugins
 icon=icon.png
 # experimental flag

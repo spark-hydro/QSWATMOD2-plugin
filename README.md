@@ -14,7 +14,7 @@ All other materials: example dataset and tutorial document can be downloaded fro
 
 -----
 # Installation
-The QGIS3 software must be installed on the system prior to the installation of QSWATMOD2. We've tested QSWATMOD2 with the “long term release (LTR)” (3.28.12) and "latest release (RC)" (3.34.0) versions of QGIS3 (long term release version recommended). Download the [QGIS](https://www.qgis.org/en/site/forusers/download.html)
+The QGIS3 software must be installed on the system prior to the installation of QSWATMOD2. **On Linux, see [Installation on Linux](#installation-on-linux) below.** We've tested QSWATMOD2 with the “long term release (LTR)” (3.28.12) and "latest release (RC)" (3.34.0) versions of QGIS3 (long term release version recommended). On Linux it is tested with QGIS 3.44 LTR (3.44.14). Download the [QGIS](https://www.qgis.org/en/site/forusers/download.html)
 
 - Install one of the versions of QGIS. It can be downloaded from https://qgis.org/en/site/forusers/download.html.
 - Download [the QSWATMOD installer](https://github.com/spark-brc/QSWATMOD2/raw/main/Installer/QSWATMOD2.exe) and install it by running QSWATMOD 2.x.exe. The QSWATMOD2 is installed into the user's home directory *(~\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QSWATMOD2)*, which we will refer to as the QSWATMOD2 plugin directory.
@@ -45,6 +45,42 @@ Now, you will see the QSWATMOD2 icon on the toolbar.
 </p>
 
 <br>
+
+# Installation on Linux
+
+QSWATMOD2 needs **QGIS 3** (Qt5). QGIS 4 (Qt6) is not supported yet, and most rolling distributions (Arch, for example) now ship QGIS 4 or a Qt6 build of QGIS 3.x. The easiest way to get QGIS 3.44 LTR on any distribution is conda-forge:
+
+```bash
+conda create -n qgis-ltr -c conda-forge --override-channels qgis=3.44 python=3.12 pandas matplotlib scipy pillow
+conda activate qgis-ltr
+qgis
+```
+
+Other QGIS 3 installs (the [Ubuntu/Debian QGIS repositories](https://qgis.org/resources/installation-guide/#debian--ubuntu), the Flatpak) should work too if they provide Python with pandas, matplotlib, scipy and Pillow, but they are **not tested** yet. Only the conda install above was tested.
+
+The Linux version of SWAT-MODFLOW3 (`swatmf3`, from [spark-hydro/SWAT-MODFLOW3](https://github.com/spark-hydro/SWAT-MODFLOW3)) is inside the plugin; the **Run** button uses it. There is nothing else to install, and the linking step no longer needs a Windows program.
+
+Pick one way to install the plugin:
+
+**1. Script** (installs into the default QGIS profile)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/spark-hydro/QSWATMOD2-plugin/main/install.sh | bash
+```
+
+Options: `--version v2.11.0`, `--flatpak` (installs into the Flatpak profile folder; untested), `--profile NAME`, `--plugins-dir DIR`, `--uninstall`. Run `./install.sh --help` after downloading it. Restart QGIS, then tick QSWATMOD2 in *Plugins > Manage and Install Plugins > Installed*.
+
+**2. ZIP file.** Download `QSWATMOD2.<version>-linux.zip` (about 11 MB) from the [Releases page](https://github.com/spark-hydro/QSWATMOD2-plugin/releases), then in QGIS: *Plugins > Manage and Install Plugins > Install from ZIP*. (`QSWATMOD2.<version>.zip` also contains the Windows programs and is three times larger; it installs on every system.)
+
+**3. Plugin repository** (QGIS then offers updates): *Plugins > Manage and Install Plugins > Settings > Add...*, and enter
+
+```
+https://github.com/spark-hydro/QSWATMOD2-plugin/releases/latest/download/plugins-linux.xml
+```
+
+The plugin is marked experimental, so tick *Show also experimental plugins* on the same Settings tab before searching for QSWATMOD2.
+
+Building the ZIP yourself and running the tests: [BUILD.md](BUILD.md).
 
 # New features added to QSWATMOD2
 
