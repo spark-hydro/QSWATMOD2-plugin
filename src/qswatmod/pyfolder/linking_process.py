@@ -11,7 +11,6 @@ from qgis.core import (
                     QgsFeatureRequest, QgsLayerTreeLayer, QgsExpression, QgsFeature,
                     QgsProcessingFeedback)
 import glob
-import subprocess
 import shutil
 from datetime import datetime
 import csv
@@ -892,15 +891,31 @@ def export_rgrid_len(self):
                 ])
 
 def run_CreateSWATMF(self):
+    """Write the swatmf_*.txt linkage files from the tables in GIS/Table.
+
+    Python replacement for CreateSWATMF.exe (see create_swatmf.py).
+    Returns True on success; on failure shows the reason and returns False.
+    """
+    from . import create_swatmf
     QSWATMOD_path_dict = self.dirs_and_paths()
-    output_dir = QSWATMOD_path_dict['Table']
-    #Out_folder_temp = self.dlg.lineEdit_output_folder.text()
-    #swatmf = os.path.normpath(output_dir + "/" + "SWATMF_files")
-    name = "CreateSWATMF.exe"
-    exe_file = os.path.normpath(os.path.join(output_dir, name))
-    #os.startfile(File_Physical)    
-    p = subprocess.Popen(exe_file , cwd = output_dir) # cwd -> current working directory    
-    p.wait()
+    table_dir = QSWATMOD_path_dict['Table']
+
+    def log(message):
+        stamp = datetime.now().strftime('[%m/%d/%y %H:%M:%S]')
+        self.dlg.textEdit_sm_link_log.append(stamp + ' -> ' + message)
+        QCoreApplication.processEvents()
+
+    try:
+        create_swatmf.create_map_files(table_dir, progress=log)
+    except (OSError, ValueError) as err:
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Critical)
+        msgBox.setWindowIcon(QtGui.QIcon(':/QSWATMOD2/pics/sm_icon.png'))
+        msgBox.setWindowTitle("Linkage files not created")
+        msgBox.setText("The linkage files could not be created:\n\n{}".format(err))
+        msgBox.exec_()
+        return False
+    return True
 
 def copylinkagefiles(self):
     QSWATMOD_path_dict = self.dirs_and_paths()
