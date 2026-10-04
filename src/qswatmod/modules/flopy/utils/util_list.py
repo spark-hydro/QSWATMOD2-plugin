@@ -1036,7 +1036,7 @@ class MfList(DataInterface, DataListInterface):
         kper : int
             MODFLOW zero-based stress period number to return. (default is zero)
         mask : boolean
-            return array with np.NaN instead of zero
+            return array with np.nan instead of zero
         Returns
         ----------
         out : dict of numpy.ndarrays
@@ -1087,7 +1087,7 @@ class MfList(DataInterface, DataListInterface):
             if kper < kpers[0]:
                 if mask:
                     for name, arr in arrays.items():
-                        arrays[name][:] = np.NaN
+                        arrays[name][:] = np.nan
                 return arrays
             # find the last kper
             else:
@@ -1102,7 +1102,7 @@ class MfList(DataInterface, DataListInterface):
             if sarr == 0:
                 if mask:
                     for name, arr in arrays.items():
-                        arrays[name][:] = np.NaN
+                        arrays[name][:] = np.nan
                 return arrays
             else:
                 raise Exception("MfList: something bad happened")
@@ -1131,12 +1131,12 @@ class MfList(DataInterface, DataListInterface):
                 arr[idx] /= cnt[idx]
             if mask:
                 arr = np.ma.masked_where(cnt == 0.0, arr)
-                arr[cnt == 0.0] = np.NaN
+                arr[cnt == 0.0] = np.nan
 
             arrays[name] = arr.copy()
         # elif mask:
         #     for name, arr in arrays.items():
-        #         arrays[name][:] = np.NaN
+        #         arrays[name][:] = np.nan
         return arrays
 
     @property
