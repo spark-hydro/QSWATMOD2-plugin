@@ -1,6 +1,8 @@
 """Tests for pyfolder/sysutil.py (no QGIS needed): run with `python3 test/test_sysutil.py`."""
 import importlib.util
 import os
+import stat
+import tempfile
 import unittest
 from unittest import mock
 
@@ -28,6 +30,54 @@ class OpenFileTest(unittest.TestCase):
                 mock.patch.object(sysutil.os, "startfile", create=True) as sf:
             sysutil.open_file("C:/x/out.gif")
         sf.assert_called_once_with(os.path.normpath("C:/x/out.gif"))
+
+
+def _touch(folder, *names):
+    for n in names:
+        open(os.path.join(folder, n), "w").close()
+
+
+class FindExeTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.dir = self.tmp.name
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_nothing_found(self):
+        self.assertIsNone(sysutil.find_swatmf_exe(self.dir, "linux"))
+        self.assertIsNone(sysutil.find_swatmf_exe(self.dir, "win32"))
+
+    def test_windows_keeps_old_priority(self):
+        _touch(self.dir, "SWAT-MODFLOW3.exe", "swatmf3")
+        self.assertEqual(os.path.basename(sysutil.find_swatmf_exe(self.dir, "win32")),
+                         "SWAT-MODFLOW3.exe")
+        _touch(self.dir, "swatmf_rel230818.exe")
+        self.assertEqual(os.path.basename(sysutil.find_swatmf_exe(self.dir, "win32")),
+                         "swatmf_rel230818.exe")
+
+    def test_linux_ignores_exe_files(self):
+        _touch(self.dir, "SWAT-MODFLOW3.exe", "swatmf_rel230818.exe")
+        self.assertIsNone(sysutil.find_swatmf_exe(self.dir, "linux"))
+
+    def test_linux_prefers_plain_name_then_newest_release(self):
+        _touch(self.dir, "swatmf3-v1.2.9-gnu-lin_x86_64-Rel",
+               "swatmf3-v1.2.10-gnu-lin_x86_64-Rel",
+               "swatmf3-v1.2.10-gnu-lin_x86_64-Rel.zip")
+        self.assertEqual(os.path.basename(sysutil.find_swatmf_exe(self.dir, "linux")),
+                         "swatmf3-v1.2.10-gnu-lin_x86_64-Rel")
+        _touch(self.dir, "swatmf3")
+        self.assertEqual(os.path.basename(sysutil.find_swatmf_exe(self.dir, "linux")),
+                         "swatmf3")
+
+    @unittest.skipIf(os.name == "nt", "no execute bit on Windows")
+    def test_ensure_executable(self):
+        _touch(self.dir, "swatmf3")
+        path = os.path.join(self.dir, "swatmf3")
+        os.chmod(path, 0o644)
+        sysutil.ensure_executable(path)
+        self.assertTrue(os.stat(path).st_mode & stat.S_IXUSR)
 
 
 if __name__ == "__main__":

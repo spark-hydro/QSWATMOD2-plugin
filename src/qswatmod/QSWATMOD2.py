@@ -77,7 +77,9 @@ from .pyfolder import cvt_plotsToVideo
 from .pyfolder import retrieve_ProjHistory
 from .pyfolder import config_sets
 from .pyfolder import post_vii_nitrate
+from .pyfolder import sysutil
 # ----------------------------------------------------------------------#
+import sys
 import time
 from datetime import datetime
 import os
@@ -1937,14 +1939,32 @@ class QSWATMOD2(object):
         import subprocess
         output_dir = QSWATMOD_path_dict['SMfolder']
 
-        if os.path.isfile(os.path.join(output_dir, "SWAT-MODFLOW3.exe")):
-            name = "SWAT-MODFLOW3.exe"
-        if os.path.isfile(os.path.join(output_dir, "swatmf_rel230818.exe")):
-            name = "swatmf_rel230818.exe"
-        exe_file = os.path.normpath(os.path.join(output_dir, name ))
+        exe_file = sysutil.find_swatmf_exe(output_dir)
+        if exe_file is None:
+            msgBox = QMessageBox()
+            msgBox.setWindowIcon(QtGui.QIcon(':/QSWATMOD2/pics/sm_icon.png'))
+            msgBox.setWindowTitle("Executable not found")
+            msgBox.setText(
+                "No SWAT-MODFLOW executable was found in\n{}\n\n"
+                "Linux/macOS: copy a swatmf3 build there (see "
+                "https://github.com/spark-hydro/SWAT-MODFLOW3/releases).".format(output_dir))
+            msgBox.exec_()
+            return
+        sysutil.ensure_executable(exe_file)
 
         # os.startfile(File_Physical)
-        p = subprocess.Popen(exe_file , cwd=output_dir) # cwd -> current working directory    
+        if sys.platform.startswith("win"):
+            # QGIS is a GUI program, so Windows opens a console window for the model
+            p = subprocess.Popen(exe_file, cwd=output_dir) # cwd -> current working directory
+        else:
+            # no console window on Linux/macOS: keep the screen output in a file
+            log = open(os.path.join(output_dir, "swatmf3_run.log"), "w")
+            p = subprocess.Popen(
+                [exe_file], cwd=output_dir, stdout=log, stderr=subprocess.STDOUT)
+            log.close() # the model keeps its own copy of the handle
+            self.iface.messageBar().pushInfo(
+                "QSWATMOD2",
+                "SWAT-MODFLOW3 started. Screen output: {}".format(log.name))
         # p.wait()  ## following line to wait till running is finished. 
 
     def check_outputs(self):

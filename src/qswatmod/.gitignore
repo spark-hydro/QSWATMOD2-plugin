@@ -17,3 +17,7 @@ dist
 # QSWATMOD2.code-workspace
 unins000.dat
 .DS_Store
+
+# Linux SWAT-MODFLOW3 program, downloaded by scripts/fetch_swatmf3.sh
+FOLDER_FOR_COPY/SWAT-MODFLOW/swatmf3
+FOLDER_FOR_COPY/SM_exes/swatmf3
