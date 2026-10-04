@@ -17,7 +17,7 @@ All other materials: example dataset and tutorial document can be downloaded fro
 The QGIS3 software must be installed on the system prior to the installation of QSWATMOD2. **On Linux, see [Installation on Linux](#installation-on-linux) below.** We've tested QSWATMOD2 with the “long term release (LTR)” (3.28.12) and "latest release (RC)" (3.34.0) versions of QGIS3 (long term release version recommended). On Linux it is tested with QGIS 3.44 LTR (3.44.14). Download the [QGIS](https://www.qgis.org/en/site/forusers/download.html)
 
 - Install one of the versions of QGIS. It can be downloaded from https://qgis.org/en/site/forusers/download.html.
-- Download [the QSWATMOD installer](https://github.com/spark-brc/QSWATMOD2/raw/main/Installer/QSWATMOD2.exe) and install it by running QSWATMOD 2.x.exe. The QSWATMOD2 is installed into the user's home directory *(~\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QSWATMOD2)*, which we will refer to as the QSWATMOD2 plugin directory.
+- Install the plugin in one of three ways (see [Installation on Windows](#installation-on-windows) just below the Linux section; the old `Installer/QSWATMOD2.exe` is no longer updated).
 
 <p align="center">
     <img src="./imgs/fig_01.png" width="200" align="center">
@@ -81,6 +81,30 @@ https://github.com/spark-hydro/QSWATMOD2-plugin/releases/latest/download/plugins
 The plugin is marked experimental, so tick *Show also experimental plugins* on the same Settings tab before searching for QSWATMOD2.
 
 Building the ZIP yourself and running the tests: [BUILD.md](BUILD.md).
+
+# Installation on Windows
+
+Close QGIS first. Pick one way to install the plugin (QGIS 3, tested with 3.44 LTR; the plugin goes into `%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins\QSWATMOD2`):
+
+**1. Script** (PowerShell, no administrator rights)
+
+```powershell
+powershell -ExecutionPolicy Bypass -c "irm https://raw.githubusercontent.com/spark-hydro/QSWATMOD2-plugin/main/install.ps1 | iex"
+```
+
+To choose a release, another profile, or to uninstall, download [install.ps1](install.ps1) and run `.\install.ps1 -Version v2.11.0`, `.\install.ps1 -Profile NAME` or `.\install.ps1 -Uninstall` (`Get-Help .\install.ps1` lists all options). It checks the download against the `SHA256SUMS` of the release. Then start QGIS and tick QSWATMOD2 in *Plugins > Manage and Install Plugins > Installed*.
+
+**2. ZIP file.** Download `QSWATMOD2.<version>.zip` from the [Releases page](https://github.com/spark-hydro/QSWATMOD2-plugin/releases), then in QGIS: *Plugins > Manage and Install Plugins > Install from ZIP*.
+
+**3. Plugin repository** (QGIS then offers updates): *Plugins > Manage and Install Plugins > Settings > Add...*, and enter
+
+```
+https://github.com/spark-hydro/QSWATMOD2-plugin/releases/latest/download/plugins.xml
+```
+
+The plugin is marked experimental, so tick *Show also experimental plugins* on the same Settings tab before searching for QSWATMOD2.
+
+The scripts and the Windows part of the checks are tested on GitHub Actions (Windows PowerShell 5.1 and PowerShell 7); the plugin itself has been run in QGIS on Linux only so far.
 
 # New features added to QSWATMOD2
 

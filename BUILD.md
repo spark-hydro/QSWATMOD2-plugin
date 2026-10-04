@@ -25,6 +25,9 @@ python3 scripts/package.py --check dist/QSWATMOD2.2.10.1.zip   # layout check on
 
 ## Install a local build
 
+Windows: `.\install.ps1 -Zip dist\QSWATMOD2.2.10.1.zip` (`-PluginsDir DIR` for another folder, `-Uninstall`).
+Linux:
+
 ```bash
 ./install.sh --zip dist/QSWATMOD2.2.10.1-linux.zip                 # default QGIS profile
 ./install.sh --zip dist/QSWATMOD2.2.10.1-linux.zip --plugins-dir /tmp/plugins
@@ -34,6 +37,20 @@ python3 scripts/package.py --check dist/QSWATMOD2.2.10.1.zip   # layout check on
 `install.sh` refuses to replace a symbolic link (a development install, e.g.
 `ln -s $PWD/src/qswatmod ~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/QSWATMOD2`)
 unless you pass `--force`.
+
+## Releases and CI
+
+- `.github/workflows/build.yml` (push to `main`, pull requests): unit tests on Linux and Windows;
+  `install.ps1` on Windows (Windows PowerShell 5.1 and PowerShell 7); the ZIPs and `install.sh`;
+  and QGIS 3.44 (`qgis/qgis` image): installs the Linux ZIP with `install.sh`, loads the plugin,
+  imports every module, runs the linking step and the Run button code on the SWAT-MODFLOW3 example
+  model (`scripts/ci_qgis_check.py`).
+- `.github/workflows/release.yml`: push a tag equal to `v` + `version=` in `metadata.txt`
+  (`git tag v2.11.0 && git push origin v2.11.0`) to build both ZIPs, `plugins.xml`,
+  `plugins-linux.xml` and `SHA256SUMS` and attach them, with `install.sh` and `install.ps1`, to a
+  GitHub Release. Manual runs and pull requests build and upload workflow artifacts only.
+- The Linux program comes from the SWAT-MODFLOW3 release named in `swatmf3-version.txt`
+  (`scripts/fetch_swatmf3.sh`); change the file to ship another version.
 
 ## Tests
 

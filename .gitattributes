@@ -1,0 +1,4 @@
+# test fixtures contain exact CRLF bytes (output of the Windows program): never convert them
+src/qswatmod/test/data/** -text
+# shell scripts must keep LF line ends on Windows checkouts
+*.sh text eol=lf
