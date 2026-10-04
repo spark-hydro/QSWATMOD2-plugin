@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+.git
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/templates/
+
+.ipynb_checkpoints
+.pytest_cache
+.vscode
+swatmf.egg-info
+build
+dist
+.trash/
+# QSWATMOD2.code-workspace
+unins000.dat
+.DS_Store

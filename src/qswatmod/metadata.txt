@@ -1,0 +1,38 @@
+# This file contains metadata for your plugin. Since 
+# version 3.0 of QGIS this is the proper way to supply 
+# information about a plugin. The old method of 
+# embedding metadata in __init__.py will 
+# is no longer supported since version 2.3.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=QSWATMOD2
+qgisMinimumVersion=3.28
+description=This plugin helps link SWAT and MODFLOW model.
+version=2.10.1
+author=Seonggyu Park
+email=seonggyu.park@brc.tamus.edu
+
+about=This plugin helps link SWAT and MODFLOW model and visualize the results of SWAT-MODFLOW simulation.
+
+tracker=github.com
+repository=https://github.com/spark-brc/QSWATMOD2.git
+# End of mandatory metadata
+
+# Recommended items:
+
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=
+homepage=
+category=Plugins
+icon=icon.png
+# experimental flag
+experimental=True
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
