@@ -63,7 +63,7 @@ curl -fsSL https://raw.githubusercontent.com/spark-hydro/QSWATMOD2-plugin/main/i
 
 Options: `--version v2.11.0`, `--flatpak` (installs into the Flatpak profile folder; untested), `--profile NAME`, `--plugins-dir DIR`, `--uninstall`. Run `./install.sh --help` after downloading it. Restart QGIS, then tick QSWATMOD2 in *Plugins > Manage and Install Plugins > Installed*.
 
-**2. ZIP file.** Download `QSWATMOD2.<version>-linux.zip` (about 11 MB) from the [Releases page](https://github.com/spark-hydro/QSWATMOD2-plugin/releases), then in QGIS: *Plugins > Manage and Install Plugins > Install from ZIP*. (`QSWATMOD2.<version>.zip` also contains the Windows programs and is three times larger; it installs on every system.)
+**2. ZIP file.** Download `QSWATMOD2.<version>-linux.zip` (about 8 MB) from the [Releases page](https://github.com/spark-hydro/QSWATMOD2-plugin/releases), then in QGIS: *Plugins > Manage and Install Plugins > Install from ZIP*. (`QSWATMOD2.<version>.zip` also contains the Windows programs and is twice as large; it installs on every system.)
 
 **3. Plugin repository** (QGIS then offers updates): *Plugins > Manage and Install Plugins > Settings > Add...*, and enter
 

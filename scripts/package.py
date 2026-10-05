@@ -36,7 +36,7 @@ EXCLUDE = [
     "i18n/*.ts",
 ]
 LINUX_EXE = "FOLDER_FOR_COPY/SWAT-MODFLOW/swatmf3"
-WINDOWS_EXE = "FOLDER_FOR_COPY/*/*.exe"   # the Windows programs (about 50 MB)
+WINDOWS_EXE = "FOLDER_FOR_COPY/*/*.exe"   # the Windows programs (about 20 MB)
 # fixed time stamp: the same input gives the same ZIP (and the same checksum)
 STAMP = (2000, 1, 1, 0, 0, 0)
 
