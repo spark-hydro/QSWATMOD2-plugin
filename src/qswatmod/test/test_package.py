@@ -65,6 +65,23 @@ class PackageTest(unittest.TestCase):
         self.assertEqual(ET.fromstring(mirror).find("pyqgis_plugin").findtext("download_url"),
                          "http://localhost:8000/x.zip")
 
+    def test_version_strings_match_metadata(self):
+        # the plugin writes "version X.Y.Z" into model files and shows it in the dialog;
+        # these strings are changed by hand at each release, so check them
+        import re
+        src = os.path.join(_root, "src", "qswatmod")
+        found = {}
+        for dirpath, dirnames, filenames in os.walk(src):
+            dirnames[:] = [d for d in dirnames if d not in ("modules", "test", "__pycache__")]
+            for name in filenames:
+                if name.endswith((".py", ".ui")):
+                    path = os.path.join(dirpath, name)
+                    with open(path, encoding="utf-8", errors="replace") as f:
+                        for match in re.finditer(r"[Vv]ersion:? (\d+\.\d+\.\d+)", f.read()):
+                            found.setdefault(match.group(1), []).append(os.path.relpath(path, src))
+        self.assertEqual(list(found), [self.meta["version"]], found)
+        self.assertGreaterEqual(sum(len(v) for v in found.values()), 10)
+
     def test_check_finds_problems(self):
         bad = os.path.join(self.tmp.name, "bad.zip")
         with zipfile.ZipFile(bad, "w") as z:

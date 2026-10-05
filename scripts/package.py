@@ -131,6 +131,7 @@ def plugins_xml(meta, zip_name, tag, base_url=None):
     body = "".join([
         tag_("description", meta.get("description", "")),
         tag_("about", meta.get("about", "")),
+        tag_("changelog", meta.get("changelog", "").strip()),
         tag_("version", meta["version"]),
         tag_("qgis_minimum_version", meta["qgisminimumversion"]),
         tag_("qgis_maximum_version", meta.get("qgismaximumversion", "3.99.0")),

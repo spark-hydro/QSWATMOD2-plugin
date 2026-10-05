@@ -10,7 +10,7 @@
 name=QSWATMOD2
 qgisMinimumVersion=3.28
 description=This plugin helps link SWAT and MODFLOW model.
-version=2.10.1
+version=2.11.0
 author=Seonggyu Park
 email=seonggyu.park@brc.tamus.edu
 
@@ -22,8 +22,12 @@ repository=https://github.com/spark-hydro/QSWATMOD2-plugin
 
 # Recommended items:
 
-# Uncomment the following line and add your changelog:
-# changelog=
+changelog=2.11.0
+    - Linux support: the SWAT-MODFLOW3 program for Linux (swatmf3) is included and used by the Run button.
+    - The linking step no longer needs CreateSWATMF.exe: a Python version writes the same files on Windows, Linux and macOS.
+    - Works with Python 3.12 and NumPy 2 (no distutils; NumPy names fixed in the bundled FloPy); starts when the QGIS profile has no locale setting.
+    - New ways to install: ZIP, install.sh (Linux), install.ps1 (Windows) and a QGIS plugin repository (plugins.xml). See the README.
+    - Needs QGIS 3 (Qt5); tested with QGIS 3.44 LTR on Linux. Not ported to QGIS 4 (Qt6) yet.
 
 # Tags are comma separated with spaces allowed
 tags=swat, modflow, groundwater, hydrology, swat-modflow

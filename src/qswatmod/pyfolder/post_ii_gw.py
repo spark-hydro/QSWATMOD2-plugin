@@ -252,7 +252,7 @@ def export_gw(self, ts):
     grid_id = self.dlg.comboBox_grid_id.currentText()
     obd_col = self.dlg.comboBox_wt_obs_data.currentText()
     
-    version = "version 2.10.1."
+    version = "version 2.11.0."
     ctime = datetime.now().strftime('- %m/%d/%y %H:%M:%S -')
 
     if self.dlg.checkBox_wt_obd.isChecked():
