@@ -4,27 +4,20 @@
 
 [QSWATMOD](https://swat.tamu.edu/software/swat-modflow/) is a QGIS-based graphical user interface that facilitates linking SWAT and MODFLOW, running SWAT-MODFLOW simulations, and viewing results.  
 
-This repository contains source codes and an executable for the new version of QSWATMOD.
-All other materials: example dataset and tutorial document can be downloaded from the old version of QSWATMOD repository.
-- **[Installer](https://github.com/spark-brc/QSWATMOD2/raw/main/Installer/QSWATMOD2.exe):** QSWATMOD.exe
-- **[Inputs](https://github.com/spark-brc/QSWATMOD2/tree/master/Inputs):** ExampleDataset.zip
-- **[Source Code](https://github.com/spark-brc/qswatmod)**
-- **[QSWATMOD Tutorial Document](https://github.com/spark-brc/QSWATMOD2/blob/main/docs/QSWATMOD_tutorial.pdf)**
-- [SWAT-MODFLOW Tutorial Document](https://github.com/spark-brc/QSWATMOD2/blob/main/docs/SWAT-MODFLOW.Tutorial_v3.pdf)
+This repository contains the source code of the new version of QSWATMOD, the example dataset and the tutorial documents. Releases (plugin ZIPs for Windows and Linux, install scripts, QGIS plugin repository files) are on the Releases page.
+- **[Releases](https://github.com/spark-hydro/QSWATMOD2-plugin/releases):** plugin ZIPs, `install.sh` (Linux), `install.ps1` (Windows), `plugins.xml`
+- **[Inputs](https://github.com/spark-hydro/QSWATMOD2-plugin/tree/main/Inputs):** ExampleDataset.zip
+- **[Source Code](https://github.com/spark-hydro/QSWATMOD2-plugin/tree/main/src/qswatmod)**
+- **[QSWATMOD Tutorial Document](https://github.com/spark-hydro/QSWATMOD2-plugin/blob/main/docs/QSWATMOD_tutorial.pdf)**
+- [SWAT-MODFLOW Tutorial Document](https://github.com/spark-hydro/QSWATMOD2-plugin/blob/main/docs/SWAT-MODFLOW.Tutorial_v3.pdf)
 
 -----
 # Installation
 The QGIS3 software must be installed on the system prior to the installation of QSWATMOD2. **On Linux, see [Installation on Linux](#installation-on-linux) below.** We've tested QSWATMOD2 with the “long term release (LTR)” (3.28.12) and "latest release (RC)" (3.34.0) versions of QGIS3 (long term release version recommended). On Linux it is tested with QGIS 3.44 LTR (3.44.14). Download the [QGIS](https://www.qgis.org/en/site/forusers/download.html)
 
 - Install one of the versions of QGIS. It can be downloaded from https://qgis.org/en/site/forusers/download.html.
-- Install the plugin in one of three ways (see [Installation on Windows](#installation-on-windows) just below the Linux section; the old `Installer/QSWATMOD2.exe` is no longer updated).
+- Install the plugin in one of three ways (see [Installation on Windows](#installation-on-windows) just below the Linux section).
 
-<p align="center">
-    <img src="./imgs/fig_01.png" width="200" align="center">
-</p>
-<p align="center">
-    <img src="./imgs/fig_02.png" width="500">
-</p>
 
 QSWATMOD2 includes all dependencies ([FloPy](https://www.usgs.gov/software/flopy-python-package-creating-running-and-post-processing-modflow-based-models) ([Bakker et al., 2016](https://onlinelibrary.wiley.com/doi/abs/10.1002/hyp.10933)) and [PyShp](https://pypi.org/project/pyshp/)) directly in the plugin to avoid user-installation.  
 - Open QGIS3 after the installation of QSWATMOD2 is finished.
@@ -130,7 +123,7 @@ There are two additional features in QSWATMOD2.
 <br>
 <br>
 
-In addition, [documentation and the SWAT-MODFLOW executable](https://swat.tamu.edu/software/swat-modflow/) are available as downloads. QSWATMOD and SWAT-MODFLOW have been tested in several watersheds. However, no warranty is given that either the model or tool is error-free. If you encounter problems with the model, tool or have suggestions for improvement, please comment at [the SWAT-MODFLOW Google group](https://groups.google.com/forum/?hl=en#!forum/swat-modflow) or [QSWATMOD github](https://github.com/spark-brc/QSWATMOD2/issues).
+In addition, [documentation and the SWAT-MODFLOW executable](https://swat.tamu.edu/software/swat-modflow/) are available as downloads. QSWATMOD and SWAT-MODFLOW have been tested in several watersheds. However, no warranty is given that either the model or tool is error-free. If you encounter problems with the model, tool or have suggestions for improvement, please comment at [the SWAT-MODFLOW Google group](https://groups.google.com/forum/?hl=en#!forum/swat-modflow) or [QSWATMOD github](https://github.com/spark-hydro/QSWATMOD2-plugin/issues).
 
 A publication documenting QSWATMOD and an example application can be found here:  
 [https://doi.org/10.1016/j.envsoft.2018.10.017](https://doi.org/10.1016/j.envsoft.2018.10.017)

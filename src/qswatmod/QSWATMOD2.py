@@ -1937,7 +1937,7 @@ class QSWATMOD2(object):
         self.define_sim_period()
 
     # NOTE: let's use the latest version of SWAT-MODFLOW3
-    # https://github.com/spark-brc/SWAT-MODFLOW3
+    # https://github.com/spark-hydro/SWAT-MODFLOW3
     def run_SM(self):
         import subprocess
         output_dir = QSWATMOD_path_dict['SMfolder']
