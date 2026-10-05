@@ -886,7 +886,8 @@ class QSWATMOD2(object):
         modflow_functions.overwriteRivPac(self)
 
     def createLinkFiles(self):
-        linking_process.run_CreateSWATMF(self)
+        if not linking_process.run_CreateSWATMF(self):
+            return
         linking_process.copylinkagefiles(self)
         msgBox = QMessageBox()
         msgBox.setWindowIcon(QtGui.QIcon(':/QSWATMOD2/pics/sm_icon.png'))
@@ -1922,7 +1923,8 @@ class QSWATMOD2(object):
                             questionBox, 'Create?',
                             'Do you wish to create the linkage files?', QMessageBox.Yes, QMessageBox.No)
         if reply == QMessageBox.Yes:
-            linking_process.run_CreateSWATMF(self)
+            if not linking_process.run_CreateSWATMF(self):
+                return
             linking_process.copylinkagefiles(self)
             msgBox.setWindowTitle("Exported!")
             msgBox.setWindowIcon(QtGui.QIcon(':/QSWATMOD2/pics/sm_icon.png'))
