@@ -80,7 +80,6 @@ from .pyfolder import post_vii_nitrate
 # ----------------------------------------------------------------------#
 import time
 from datetime import datetime
-import distutils.dir_util
 import os
 import os.path
 import glob
@@ -1222,9 +1221,9 @@ class QSWATMOD2(object):
         # self.dlg.Project_Directory.setText(Out_folder)
         # copy the initial projectfolder
         if os.path.exists(Out_folder):
-            distutils.dir_util.remove_tree(Out_folder)
+            shutil.rmtree(Out_folder)
         
-        distutils.dir_util.copy_tree(In_folder, Out_folder)
+        shutil.copytree(In_folder, Out_folder, dirs_exist_ok=True)
         time.sleep(1)
         #the project database is updated
         #self.DB_CreateConnection()
@@ -1290,7 +1289,7 @@ class QSWATMOD2(object):
             Project_Name = QFileInfo(proj.fileName()).baseName()
             Out_folder = QSWATMOD_path_dict['SMfolder']
             #distutils.dir_util.remove_tree(Out_folder)
-            distutils.dir_util.copy_tree(directory, Out_folder)
+            shutil.copytree(directory, Out_folder, dirs_exist_ok=True)
 
             time = datetime.now().strftime('[%m/%d/%y %H:%M:%S]')
             self.dlg.textEdit_sm_link_log.append(time+' -> ' + "Copying orginal MODFLOW inputs ... processing")

@@ -42,7 +42,6 @@ from qgis.PyQt import QtGui, uic, QtCore, QtSql
 import numpy as np
 # import pandas as pd
 from qgis.core import QgsProject, QgsFeatureRequest, QgsProcessingException
-import distutils.dir_util
 from datetime import datetime
 
 from osgeo import gdal

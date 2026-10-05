@@ -5,6 +5,7 @@ from qgis.core import (
 from qgis.PyQt import QtCore, QtGui, QtSql  
 from qgis.PyQt.QtCore import QCoreApplication              
 from PyQt5.QtWidgets import QMessageBox
+from .sysutil import open_file
 
 
 def cvt_plotsToVideo(self):
@@ -62,4 +63,4 @@ def cvt_plotsToVideo(self):
                     questionBox, 'Play?', 
                     'Would you like to play the video?', QMessageBox.Yes, QMessageBox.No)
     if reply == QMessageBox.Yes:
-        os.startfile(os.path.join(dir_path, "output.mp4"))
+        open_file(os.path.join(dir_path, "output.mp4"))

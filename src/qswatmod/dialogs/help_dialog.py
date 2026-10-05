@@ -28,7 +28,6 @@ import os.path
 from qgis.PyQt import QtGui, uic
 
 # import numpy as np
-import distutils.dir_util
 from QSWATMOD2.QSWATMOD2 import *
 from PyQt5.QtWidgets import QDialog
 

@@ -37,7 +37,6 @@ from qgis.core import QgsProject, QgsVectorLayer, QgsVectorFileWriter
 import numpy as np
 # import pandas as pd
 from qgis.core import QgsProject, QgsFeatureRequest
-import distutils.dir_util
 from datetime import datetime
 
 from osgeo import gdal

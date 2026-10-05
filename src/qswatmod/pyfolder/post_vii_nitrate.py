@@ -11,6 +11,7 @@ from qgis.PyQt import QtCore, QtGui, QtSql
 import datetime
 import pandas as pd
 import os
+from .sysutil import open_file
 import glob
 from PyQt5.QtGui import QIcon, QColor, QImage, QPainter, QPen, QFont
 from PyQt5.QtWidgets import QMessageBox
@@ -675,4 +676,4 @@ def cvt_vtr(self):
                     questionBox, 'Open?', 
                     'Do you want to open the animated gif file?', QMessageBox.Yes, QMessageBox.No)
     if reply == QMessageBox.Yes:
-        os.startfile(os.path.join(rasterpath, '{}.gif'.format(selectedVector)))
+        open_file(os.path.join(rasterpath, '{}.gif'.format(selectedVector)))
