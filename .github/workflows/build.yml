@@ -58,7 +58,7 @@ jobs:
           powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1 -Zip "$zip" -PluginsDir "$plugins"
           test -f "$plugins/QSWATMOD2/metadata.txt"
           test -f "$plugins/QSWATMOD2/pyfolder/create_swatmf.py"
-          test -f "$plugins/QSWATMOD2/FOLDER_FOR_COPY/SWAT-MODFLOW/SWAT-MODFLOW3.exe"
+          test -f "$plugins/QSWATMOD2/FOLDER_FOR_COPY/SWAT-MODFLOW/swatmf_rel230818.exe"
           pwsh -NoProfile -File install.ps1 -Zip "$zip" -PluginsDir "$plugins"
           powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1 -Uninstall -PluginsDir "$plugins"
           test ! -e "$plugins/QSWATMOD2"

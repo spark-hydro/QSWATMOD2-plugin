@@ -7,8 +7,8 @@ plugin folder (`src/qswatmod`, installed as `QSWATMOD2/`) and the SWAT-MODFLOW3 
 
 ```bash
 scripts/fetch_swatmf3.sh               # Linux swatmf3 from the SWAT-MODFLOW3 release in swatmf3-version.txt
-python3 scripts/package.py --xml       # dist/QSWATMOD2.<version>.zip + plugins.xml  (about 32 MB, with the Windows programs)
-python3 scripts/package.py --linux --xml   # dist/QSWATMOD2.<version>-linux.zip + plugins-linux.xml (about 11 MB)
+python3 scripts/package.py --xml       # dist/QSWATMOD2.<version>.zip + plugins.xml  (about 16 MB, with the Windows programs)
+python3 scripts/package.py --linux --xml   # dist/QSWATMOD2.<version>-linux.zip + plugins-linux.xml (about 8 MB)
 python3 scripts/package.py --check dist/QSWATMOD2.2.11.0.zip   # layout check only
 ```
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Download the Linux SWAT-MODFLOW3 program from its GitHub release and put it where the
-# plugin copies it from, as `swatmf3`, in both folders that every new project gets:
-#   src/qswatmod/FOLDER_FOR_COPY/SWAT-MODFLOW/   and   .../SM_exes/
+# plugin copies it from, as `swatmf3`, in the folder every new project gets and the Run button
+# uses:   src/qswatmod/FOLDER_FOR_COPY/SWAT-MODFLOW/
 #
 #   scripts/fetch_swatmf3.sh              # version in swatmf3-version.txt
 #   scripts/fetch_swatmf3.sh v1.2.5       # another release
@@ -31,10 +31,8 @@ exe="$(find "$tmp/x" -type f -name 'swatmf3-*' | head -1)"
 [ -n "$exe" ] || { echo "no swatmf3-* program in $zip" >&2; exit 1; }
 chmod +x "$exe"
 
-for d in SWAT-MODFLOW SM_exes; do
-    dest="$root/src/qswatmod/FOLDER_FOR_COPY/$d"
-    mkdir -p "$dest"
-    cp "$exe" "$dest/swatmf3"
-done
-echo "Installed swatmf3 ($version, $asset) in FOLDER_FOR_COPY/SWAT-MODFLOW and SM_exes"
+dest="$root/src/qswatmod/FOLDER_FOR_COPY/SWAT-MODFLOW"
+mkdir -p "$dest"
+cp "$exe" "$dest/swatmf3"
+echo "Installed swatmf3 ($version, $asset) in FOLDER_FOR_COPY/SWAT-MODFLOW"
 "$root/src/qswatmod/FOLDER_FOR_COPY/SWAT-MODFLOW/swatmf3" --version | sed -n '/SWAT-MODFLOW3/,$p'
