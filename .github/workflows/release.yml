@@ -1,0 +1,105 @@
+# QSWATMOD2 release, modeled on spark-hydro/SWAT-MODFLOW3 (.github/workflows/release.yml)
+#
+# Push a tag that matches version= in src/qswatmod/metadata.txt (for 2.11.0: v2.11.0) to build
+# the plugin ZIPs and the plugins.xml repository files and attach them, with install.sh,
+# install.ps1
+# with SHA256SUMS, to a new GitHub Release:
+#     git tag v2.11.0 && git push origin v2.11.0
+# Manual runs and pull requests that change this file or the packaging scripts
+# build everything and upload workflow artifacts only (no release is created).
+
+name: Release QSWATMOD2
+
+on:
+  push:
+    tags:
+      - 'v*'
+  pull_request:
+    paths:
+      - '.github/workflows/release.yml'
+      - 'install.ps1'
+      - 'scripts/package.py'
+      - 'scripts/fetch_swatmf3.sh'
+      - 'install.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: ZIPs and plugins.xml
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Version
+        id: version
+        run: |
+          version=$(sed -n 's/^version=//p' src/qswatmod/metadata.txt | tr -d '\r')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            if [ "$GITHUB_REF_NAME" != "v$version" ]; then
+              echo "::error::tag $GITHUB_REF_NAME does not match version=$version in src/qswatmod/metadata.txt"
+              exit 1
+            fi
+            echo "tag=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: SWAT-MODFLOW3 program for Linux
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/fetch_swatmf3.sh
+
+      - name: Build
+        run: |
+          python3 scripts/package.py --xml --tag "${{ steps.version.outputs.tag }}"
+          python3 scripts/package.py --linux --xml --tag "${{ steps.version.outputs.tag }}"
+          python3 scripts/package.py --check dist/QSWATMOD2.${{ steps.version.outputs.version }}.zip
+          python3 scripts/package.py --check dist/QSWATMOD2.${{ steps.version.outputs.version }}-linux.zip
+          ls -hl dist
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin
+          path: dist/
+
+  release:
+    name: Release
+    needs: package
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Checksums
+        run: |
+          cd dist
+          sha256sum QSWATMOD2.*.zip > SHA256SUMS
+          cat SHA256SUMS
+          ls -hl
+
+      - name: Checkout (for install.sh)
+        uses: actions/checkout@v4
+        with:
+          path: src_repo
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/QSWATMOD2.*.zip
+            dist/plugins.xml
+            dist/plugins-linux.xml
+            dist/SHA256SUMS
+            src_repo/install.sh
+            src_repo/install.ps1
+          generate_release_notes: true
