@@ -1064,7 +1064,7 @@ def export_wb_d(self):
     sedate = self.dlg.comboBox_std_edate.currentText()
     # Add info
     from datetime import datetime
-    version = "version 2.10.1."
+    version = "version 2.11.0."
     time = datetime.now().strftime('- %m/%d/%y %H:%M:%S -')
     msgBox = QMessageBox()
     msgBox.setWindowIcon(QtGui.QIcon(':/QSWATMOD2/pics/sm_icon.png'))
@@ -1140,7 +1140,7 @@ def export_wb_m(self):
     sedate = self.dlg.comboBox_std_edate.currentText()
     # Add info
     from datetime import datetime
-    version = "version 2.10.1."
+    version = "version 2.11.0."
     time = datetime.now().strftime('- %m/%d/%y %H:%M:%S -')
     msgBox = QMessageBox()
     msgBox.setWindowIcon(QtGui.QIcon(':/QSWATMOD2/pics/sm_icon.png'))
@@ -1208,7 +1208,7 @@ def export_wb_a(self):
     dff = data[ssdate:sedate]
     # Add info
     from datetime import datetime
-    version = "version 2.10.1."
+    version = "version 2.11.0."
     time = datetime.now().strftime('- %m/%d/%y %H:%M:%S -')
     with open(os.path.join(outfolder, "wb_annual_total.txt"), 'w') as f:
         f.write("# Annual total water balance [mm] - QSWATMOD2 Plugin " + version + time + "\n")

@@ -275,7 +275,7 @@ def export_stf(self, ts):
     obd_file = self.dlg.comboBox_stf_obd.currentText()
     obd_col = self.dlg.comboBox_SD_obs_data.currentText()
 
-    version = "version 2.10.1."
+    version = "version 2.11.0."
     ctime = datetime.now().strftime('- %m/%d/%y %H:%M:%S -')
 
     if self.dlg.checkBox_stream_obd.isChecked():

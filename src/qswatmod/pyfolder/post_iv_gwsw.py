@@ -930,7 +930,7 @@ def export_gwsw(self):
     df = f_c.drop(['x_max', 'y_max'], axis=1)
 
     # Add info
-    version = "version 2.10.1."
+    version = "version 2.11.0."
     time = datetime.datetime.now().strftime('- %m/%d/%y %H:%M:%S -')
 
     # msgBox = QMessageBox()
@@ -1244,7 +1244,7 @@ def export_avg_mgwsw(self):
     df = f_c.drop(['x_max', 'y_max'], axis=1)
 
     # Add info
-    version = "version 2.10.1."
+    version = "version 2.11.0."
     time = datetime.datetime.now().strftime('- %m/%d/%y %H:%M:%S -')
 
     # msgBox = QMessageBox()

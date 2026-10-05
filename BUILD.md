@@ -9,13 +9,13 @@ plugin folder (`src/qswatmod`, installed as `QSWATMOD2/`) and the SWAT-MODFLOW3 
 scripts/fetch_swatmf3.sh               # Linux swatmf3 from the SWAT-MODFLOW3 release in swatmf3-version.txt
 python3 scripts/package.py --xml       # dist/QSWATMOD2.<version>.zip + plugins.xml  (about 32 MB, with the Windows programs)
 python3 scripts/package.py --linux --xml   # dist/QSWATMOD2.<version>-linux.zip + plugins-linux.xml (about 11 MB)
-python3 scripts/package.py --check dist/QSWATMOD2.2.10.1.zip   # layout check only
+python3 scripts/package.py --check dist/QSWATMOD2.2.11.0.zip   # layout check only
 ```
 
 - The version comes from `src/qswatmod/metadata.txt`. The ZIP has one top-level folder,
   `QSWATMOD2/`, with `metadata.txt` directly inside.
 - **File name:** `QSWATMOD2.<version>[-linux].zip`. QGIS takes the plugin id from the file
-  name up to the first dot, so `QSWATMOD2-2.10.1.zip` would be read as the plugin
+  name up to the first dot, so `QSWATMOD2-2.11.0.zip` would be read as the plugin
   `QSWATMOD2-2` and updates would not be recognised.
 - The ZIP is reproducible (fixed time stamps): the same files give the same checksum.
 - QGIS "Install from ZIP" does not keep file permissions; the plugin sets the execute bit
@@ -25,12 +25,12 @@ python3 scripts/package.py --check dist/QSWATMOD2.2.10.1.zip   # layout check on
 
 ## Install a local build
 
-Windows: `.\install.ps1 -Zip dist\QSWATMOD2.2.10.1.zip` (`-PluginsDir DIR` for another folder, `-Uninstall`).
+Windows: `.\install.ps1 -Zip dist\QSWATMOD2.2.11.0.zip` (`-PluginsDir DIR` for another folder, `-Uninstall`).
 Linux:
 
 ```bash
-./install.sh --zip dist/QSWATMOD2.2.10.1-linux.zip                 # default QGIS profile
-./install.sh --zip dist/QSWATMOD2.2.10.1-linux.zip --plugins-dir /tmp/plugins
+./install.sh --zip dist/QSWATMOD2.2.11.0-linux.zip                 # default QGIS profile
+./install.sh --zip dist/QSWATMOD2.2.11.0-linux.zip --plugins-dir /tmp/plugins
 ./install.sh --uninstall
 ```
 
