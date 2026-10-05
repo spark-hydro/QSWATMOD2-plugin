@@ -97,7 +97,7 @@ https://github.com/spark-hydro/QSWATMOD2-plugin/releases/latest/download/plugins
 
 The plugin is marked experimental, so tick *Show also experimental plugins* on the same Settings tab before searching for QSWATMOD2.
 
-The Run button uses `swatmf3.exe`, the Windows (gfortran) build of [SWAT-MODFLOW3](https://github.com/spark-hydro/SWAT-MODFLOW3) v1.2.5 (Windows 10 or newer; it needs no other files). Projects made with older versions keep their own `swatmf_rel230818.exe`, which is still used. `install.ps1` and the installed `swatmf3.exe` (run on the SWAT-MODFLOW3 example model and compared with its reference results) are tested on GitHub Actions (Windows PowerShell 5.1 and PowerShell 7); the plugin itself has been run in QGIS on Linux only so far.
+The Run button uses `swatmf3.exe`, the Windows (gfortran) build of [SWAT-MODFLOW3](https://github.com/spark-hydro/SWAT-MODFLOW3) v1.2.5 (Windows 10 or newer; it needs no other files). Projects made with older versions keep their own `swatmf_rel230818.exe`, which is still used. `install.ps1` and the installed `swatmf3.exe` (run on the SWAT-MODFLOW3 example model and compared with its reference results) are tested on GitHub Actions (Windows PowerShell 5.1 and PowerShell 7); the plugin itself has been run in QGIS on Linux (3.44 LTR) and on Windows.
 
 # New features added to QSWATMOD2
 
