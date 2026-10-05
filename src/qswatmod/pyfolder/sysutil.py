@@ -27,20 +27,20 @@ def _natural_key(name):
 def find_swatmf_exe(folder, platform=None):
     """Return the SWAT-MODFLOW executable in `folder`, or None.
 
-    Windows: swatmf_rel230818.exe, else SWAT-MODFLOW3.exe (same order as before).
+    Windows: `swatmf3.exe`, else the newest `swatmf3-*.exe` build (the SWAT-MODFLOW3 release),
+    else the old swatmf_rel230818.exe / SWAT-MODFLOW3.exe of projects made with plugin 2.10.
     Linux/macOS: `swatmf3`, else the newest `swatmf3-*` build, e.g. the file name
     inside the SWAT-MODFLOW3 release zip (swatmf3-v1.2.5-gnu-lin_x86_64-Rel).
     """
     platform = platform or sys.platform
+    releases = lambda ok: sorted(
+        (n for n in os.listdir(folder) if n.startswith("swatmf3-") and ok(n)),
+        key=_natural_key, reverse=True)
     if platform.startswith("win"):
-        names = ["swatmf_rel230818.exe", "SWAT-MODFLOW3.exe"]
+        names = ["swatmf3.exe"] + releases(lambda n: n.endswith(".exe"))
+        names += ["swatmf_rel230818.exe", "SWAT-MODFLOW3.exe"]
     else:
-        names = ["swatmf3"]
-        skip = (".zip", ".exe", ".txt", ".log")
-        names += sorted(
-            (n for n in os.listdir(folder)
-             if n.startswith("swatmf3-") and not n.endswith(skip)),
-            key=_natural_key, reverse=True)
+        names = ["swatmf3"] + releases(lambda n: not n.endswith((".zip", ".exe", ".txt", ".log")))
     for name in names:
         path = os.path.join(folder, name)
         if os.path.isfile(path):

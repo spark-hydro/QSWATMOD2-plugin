@@ -1,14 +1,17 @@
 # Building and testing the plugin
 
 The plugin is Python only, so there is nothing to compile. A release is a ZIP with the
-plugin folder (`src/qswatmod`, installed as `QSWATMOD2/`) and the SWAT-MODFLOW3 programs.
+plugin folder (`src/qswatmod`, installed as `QSWATMOD2/`) and the SWAT-MODFLOW3 programs
+(`swatmf3` for Linux and `swatmf3.exe` for Windows, both downloaded from the SWAT-MODFLOW3
+release and not stored in git; only the old Intel debug build `SM_exes/swamf_deb230818.exe` is).
 
 ## Build the ZIP
 
 ```bash
-scripts/fetch_swatmf3.sh               # Linux swatmf3 from the SWAT-MODFLOW3 release in swatmf3-version.txt
-python3 scripts/package.py --xml       # dist/QSWATMOD2.<version>.zip + plugins.xml  (about 16 MB, with the Windows programs)
-python3 scripts/package.py --linux --xml   # dist/QSWATMOD2.<version>-linux.zip + plugins-linux.xml (about 8 MB)
+SWATMF3_PLATFORM=all scripts/fetch_swatmf3.sh   # swatmf3 (Linux) and swatmf3.exe (Windows) from the
+                                       # SWAT-MODFLOW3 release in swatmf3-version.txt (default: Linux only)
+python3 scripts/package.py --xml       # dist/QSWATMOD2.<version>.zip + plugins.xml  (about 14 MB, both programs)
+python3 scripts/package.py --linux --xml   # dist/QSWATMOD2.<version>-linux.zip + plugins-linux.xml (about 8 MB, Linux program only)
 python3 scripts/package.py --check dist/QSWATMOD2.2.11.0.zip   # layout check only
 ```
 
@@ -41,7 +44,8 @@ unless you pass `--force`.
 ## Releases and CI
 
 - `.github/workflows/build.yml` (push to `main`, pull requests): unit tests on Linux and Windows;
-  `install.ps1` on Windows (Windows PowerShell 5.1 and PowerShell 7); the ZIPs and `install.sh`;
+  the ZIPs and `install.sh`; on Windows `install.ps1` (Windows PowerShell 5.1 and PowerShell 7) and the
+  installed `swatmf3.exe` run on the SWAT-MODFLOW3 example model with its `regress.py`;
   and QGIS 3.44 (`qgis/qgis` image): installs the Linux ZIP with `install.sh`, loads the plugin,
   imports every module, runs the linking step and the Run button code on the SWAT-MODFLOW3 example
   model (`scripts/ci_qgis_check.py`).
@@ -49,7 +53,7 @@ unless you pass `--force`.
   (`git tag v2.11.0 && git push origin v2.11.0`) to build both ZIPs, `plugins.xml`,
   `plugins-linux.xml` and `SHA256SUMS` and attach them, with `install.sh` and `install.ps1`, to a
   GitHub Release. Manual runs and pull requests build and upload workflow artifacts only.
-- The Linux program comes from the SWAT-MODFLOW3 release named in `swatmf3-version.txt`
+- Both programs come from the SWAT-MODFLOW3 release named in `swatmf3-version.txt`
   (`scripts/fetch_swatmf3.sh`); change the file to ship another version.
 
 ## Tests

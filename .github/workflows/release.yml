@@ -49,9 +49,10 @@ jobs:
             echo "tag=v$version" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: SWAT-MODFLOW3 program for Linux
+      - name: SWAT-MODFLOW3 programs (Linux and Windows)
         env:
           GH_TOKEN: ${{ github.token }}
+          SWATMF3_PLATFORM: all
         run: scripts/fetch_swatmf3.sh
 
       - name: Build

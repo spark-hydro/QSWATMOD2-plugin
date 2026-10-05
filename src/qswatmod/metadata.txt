@@ -24,6 +24,7 @@ repository=https://github.com/spark-hydro/QSWATMOD2-plugin
 
 changelog=2.11.0
     - Linux support: the SWAT-MODFLOW3 program for Linux (swatmf3) is included and used by the Run button.
+    - Windows: the Run button now uses swatmf3.exe, the gfortran build of SWAT-MODFLOW3 v1.2.5 (https://github.com/spark-hydro/SWAT-MODFLOW3), instead of the 2023 Intel build; on the Middle Bosque example its results differ from the Intel reference results by at most 4e-4 (relative), see the SWAT-MODFLOW3 regression check. Projects made with older versions keep their own swatmf_rel230818.exe, which is still found.
     - The linking step no longer needs CreateSWATMF.exe: a Python version writes the same files on Windows, Linux and macOS.
     - Works with Python 3.12 and NumPy 2 (no distutils; NumPy names fixed in the bundled FloPy); starts when the QGIS profile has no locale setting.
     - New ways to install: ZIP, install.sh (Linux), install.ps1 (Windows) and a QGIS plugin repository (plugins.xml). See the README.

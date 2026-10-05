@@ -5,7 +5,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/spark-hydro/QSWATMOD2-plugin/main/install.sh | bash
 #   ./install.sh                       # latest release, Linux ZIP (SWAT-MODFLOW3 for Linux inside)
 #   ./install.sh --version v2.11.0     # a specific release
-#   ./install.sh --full                # the ZIP with the Windows programs too (16 MB)
+#   ./install.sh --full                # the ZIP with the Windows program too (14 MB)
 #   ./install.sh --zip QSWATMOD2.2.11.0-linux.zip     # a ZIP you already have
 #   ./install.sh --flatpak             # QGIS installed from Flatpak
 #   ./install.sh --profile work        # another QGIS profile (default: default)
