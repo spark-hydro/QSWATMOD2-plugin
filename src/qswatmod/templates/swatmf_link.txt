@@ -1,0 +1,11 @@
+1	mf_active: 0 = run SWAT only, 1 = run SWAT and MODFLOW together fully linked	
+0	rt_active: 0 = run SWAT only, 1 = run SWAT, MODFLOW, RT3D together fully linked
+1	mf_interval: the number of days between MODFLOW runs
+1	Read in observation cells from "modflow.obs" (0=no observation file; 1=observation file is available)
+Optional output for SWAT-MODFLOW (0=no; 1=yes)
+1	SWAT Deep Percolation (mm) (for each HRU)
+1	MODFLOW Recharge (m3/day) (for each MODFLOW Cell)
+1	SWAT Channel Depth (m) (for each SWAT Subbasin)
+1	MODFLOW River Stage (m) (for each MODFLOW River Cell)
+1	Groundwater/Surface Water Exchange (m3/day) (for each MODFLOW River Cell)
+1	Groundwater/Surface Water Exchange (m3/day) (for each SWAT Subbasin)

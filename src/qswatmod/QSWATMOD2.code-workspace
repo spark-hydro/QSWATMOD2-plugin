@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.pythonPath": "C:\\Program Files\\QGIS 3.40.10\\apps\\Python312\\python.exe",
+		"esbonio.server.enabled": true,
+		"python.defaultInterpreterPath": "C:\\Program Files\\QGIS 3.40.10\\apps\\Python312\\python.exe",
+		"python.autoComplete.extraPaths": [
+			"C:\\Program Files\\QGIS 3.40.10\\apps\\qgis-ltr\\python"
+		],
+		"python.analysis.extraPaths": [
+			"C:\\Program Files\\QGIS 3.40.10\\apps\\qgis-ltr\\python"
+		]
+	}
+}

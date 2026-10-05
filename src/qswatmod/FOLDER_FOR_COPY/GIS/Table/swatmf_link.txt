@@ -1,0 +1,14 @@
+1    SWAT-MODFLOW is activated
+0    MODFLOW Pumping --> SWAT Irrigation
+0    SWAT Auto-Irrigation --> MODFLOW Pumping
+0    MODFLOW Drains --> SWAT subbasin channels
+0    RT3D is active (N and P groundwater reactive transport)
+0    Read in observation cells from "modflow.obs"
+# Optional output for SWAT-MODFLOW (0=no; 1=yes)
+1    SWAT Deep Percolation (mm) (for each HRU)
+1    MODFLOW Recharge (m3/day) (for each MODFLOW Cell)
+1    SWAT Channel Depth (m) (for each SWAT Subbasin)
+1    MODFLOW River Stage (m) (for each MODFLOW River Cell)
+1    Groundwater/Surface Water Exchange (m3/day) (for each MODFLOW River Cell)
+1    Groundwater/Surface Water Exchange (m3/day) (for each SWAT Subbasin)
+1    Print out average values for SWAT-MODFLOW and RT3D output variables
