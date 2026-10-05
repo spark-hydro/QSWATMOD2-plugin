@@ -247,12 +247,12 @@ class _ModpathSeries:
                         dest_cells = t
 
         dest_cells = np.array(dest_cells, dtype=raslice.dtype)
-        inds = np.in1d(raslice, dest_cells)
+        inds = np.isin(raslice, dest_cells)
         epdest = ra[inds].copy().view(np.recarray)
 
         if to_recarray:
             # use particle ids to get the rest of the paths
-            inds = np.in1d(ra["particleid"], epdest.particleid)
+            inds = np.isin(ra["particleid"], epdest.particleid)
             series = ra[inds].copy()
             series.sort(order=["particleid", "time"])
             series = series.view(np.recarray)
@@ -1181,7 +1181,7 @@ class EndpointFile:
         dtype = np.dtype(dtype)
         dest_cells = np.array(dest_cells, dtype=dtype)
 
-        inds = np.in1d(raslice, dest_cells)
+        inds = np.isin(raslice, dest_cells)
         epdest = ra[inds].copy().view(np.recarray)
         return epdest
 

@@ -33,7 +33,7 @@ from builtins import object
 
 from qgis.PyQt.QtCore import (
                     QSettings, QTranslator, qVersion,
-                    QCoreApplication, QFileInfo, QVariant
+                    QCoreApplication, QFileInfo, QVariant, QLocale
 )
 from qgis.PyQt import QtCore, QtGui, QtSql
 from qgis.PyQt.QtSql import QSqlDatabase, QSqlQuery
@@ -119,7 +119,8 @@ class QSWATMOD2(object):
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
         # initialize locale
-        locale = QSettings().value('locale/userLocale')[0:2]
+        # no override in the QGIS profile: fall back to the system locale
+        locale = str(QSettings().value('locale/userLocale') or QLocale().name())[0:2]
         locale_path = os.path.join(
             self.plugin_dir,
             'i18n',

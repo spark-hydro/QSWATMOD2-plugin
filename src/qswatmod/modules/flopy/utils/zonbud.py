@@ -1107,12 +1107,12 @@ class ZoneBudget:
             rowidx = np.where(
                 (self._budget["time_step"] == kstpkper[0])
                 & (self._budget["stress_period"] == kstpkper[1])
-                & np.in1d(self._budget["name"], innames)
+                & np.isin(self._budget["name"], innames)
             )
         elif totim is not None:
             rowidx = np.where(
                 (self._budget["totim"] == totim)
-                & np.in1d(self._budget["name"], innames)
+                & np.isin(self._budget["name"], innames)
             )
         a = _numpyvoid2numeric(
             self._budget[list(self._zonenamedict.values())][rowidx]
@@ -1129,12 +1129,12 @@ class ZoneBudget:
             rowidx = np.where(
                 (self._budget["time_step"] == kstpkper[0])
                 & (self._budget["stress_period"] == kstpkper[1])
-                & np.in1d(self._budget["name"], outnames)
+                & np.isin(self._budget["name"], outnames)
             )
         elif totim is not None:
             rowidx = np.where(
                 (self._budget["totim"] == totim)
-                & np.in1d(self._budget["name"], outnames)
+                & np.isin(self._budget["name"], outnames)
             )
         a = _numpyvoid2numeric(
             self._budget[list(self._zonenamedict.values())][rowidx]
@@ -1715,7 +1715,7 @@ class ZoneBudget:
         newbud = self._budget.copy()
         for f in self._zonenamedict.values():
             newbud[f] = np.array([r for r in newbud[f]]) * other
-        idx = np.in1d(self._budget["name"], "PERCENT_DISCREPANCY")
+        idx = np.isin(self._budget["name"], "PERCENT_DISCREPANCY")
         newbud[:][idx] = self._budget[:][idx]
         newobj = self.copy()
         newobj._budget = newbud
@@ -1725,7 +1725,7 @@ class ZoneBudget:
         newbud = self._budget.copy()
         for f in self._zonenamedict.values():
             newbud[f] = np.array([r for r in newbud[f]]) / float(other)
-        idx = np.in1d(self._budget["name"], "PERCENT_DISCREPANCY")
+        idx = np.isin(self._budget["name"], "PERCENT_DISCREPANCY")
         newbud[:][idx] = self._budget[:][idx]
         newobj = self.copy()
         newobj._budget = newbud
@@ -1735,7 +1735,7 @@ class ZoneBudget:
         newbud = self._budget.copy()
         for f in self._zonenamedict.values():
             newbud[f] = np.array([r for r in newbud[f]]) / float(other)
-        idx = np.in1d(self._budget["name"], "PERCENT_DISCREPANCY")
+        idx = np.isin(self._budget["name"], "PERCENT_DISCREPANCY")
         newbud[:][idx] = self._budget[:][idx]
         newobj = self.copy()
         newobj._budget = newbud
@@ -1745,7 +1745,7 @@ class ZoneBudget:
         newbud = self._budget.copy()
         for f in self._zonenamedict.values():
             newbud[f] = np.array([r for r in newbud[f]]) + other
-        idx = np.in1d(self._budget["name"], "PERCENT_DISCREPANCY")
+        idx = np.isin(self._budget["name"], "PERCENT_DISCREPANCY")
         newbud[:][idx] = self._budget[:][idx]
         newobj = self.copy()
         newobj._budget = newbud
@@ -1755,7 +1755,7 @@ class ZoneBudget:
         newbud = self._budget.copy()
         for f in self._zonenamedict.values():
             newbud[f] = np.array([r for r in newbud[f]]) - other
-        idx = np.in1d(self._budget["name"], "PERCENT_DISCREPANCY")
+        idx = np.isin(self._budget["name"], "PERCENT_DISCREPANCY")
         newbud[:][idx] = self._budget[:][idx]
         newobj = self.copy()
         newobj._budget = newbud
@@ -2476,7 +2476,7 @@ def _get_budget(recarray, zonenamedict, names=None, zones=None, net=False):
 
     if names is not None:
         names = _clean_budget_names(recarray, names)
-        select_records = np.in1d(recarray["name"], names)
+        select_records = np.isin(recarray["name"], names)
     if net:
         if names is None:
             names = _clean_budget_names(recarray, _get_record_names(recarray))
@@ -2492,7 +2492,7 @@ def _get_budget(recarray, zonenamedict, names=None, zones=None, net=False):
                 seen.append(iname)
             else:
                 net_names.append(iname)
-        select_records = np.in1d(net_budget["name"], net_names)
+        select_records = np.isin(net_budget["name"], net_names)
         return net_budget[select_fields][select_records]
     else:
         return recarray[select_fields][select_records]
@@ -2584,8 +2584,8 @@ def _compute_net_budget(recarray, zonenamedict):
     if "totim" not in recarray.dtype.names:
         select_fields.pop(0)
 
-    select_records_in = np.in1d(recarray["name"], innames)
-    select_records_out = np.in1d(recarray["name"], outnames)
+    select_records_in = np.isin(recarray["name"], innames)
+    select_records_out = np.isin(recarray["name"], outnames)
     in_budget = recarray[select_fields][select_records_in]
     out_budget = recarray[select_fields][select_records_out]
     net_budget = in_budget.copy()

@@ -1455,7 +1455,7 @@ class ModflowSfr2(Package):
         return ra.view(np.recarray)
 
     def repair_outsegs(self):
-        isasegment = np.in1d(
+        isasegment = np.isin(
             self.segment_data[0].outseg, self.segment_data[0].nseg
         )
         isasegment = isasegment | (self.segment_data[0].outseg < 0)
