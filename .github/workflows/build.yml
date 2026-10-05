@@ -1,8 +1,9 @@
 # QSWATMOD2 CI, modeled on spark-hydro/SWAT-MODFLOW3 (.github/workflows/build.yml)
 #
-# tests    unit tests that need no QGIS (Linux and Windows), a syntax check, and on Windows
-#          install.ps1 with Windows PowerShell 5.1 and PowerShell 7
-# package  builds the ZIPs with the Linux SWAT-MODFLOW3 program, checks them, tests install.sh
+# tests    unit tests that need no QGIS (Linux and Windows) and a syntax check
+# package  builds the ZIPs with the Linux and Windows SWAT-MODFLOW3 programs, checks them, tests install.sh
+# windows  installs the full ZIP with install.ps1 (Windows PowerShell 5.1, then PowerShell 7) and runs the
+#          installed swatmf3.exe on the SWAT-MODFLOW3 example model with its regression check (regress.py)
 # qgis     installs the Linux ZIP with install.sh into QGIS 3.44 (qgis/qgis image), loads the plugin,
 #          imports every module, runs the linking step and the Run button code on the
 #          SWAT-MODFLOW3 example model
@@ -48,21 +49,6 @@ jobs:
           python src/qswatmod/test/test_create_swatmf.py
           python src/qswatmod/test/test_package.py
 
-      - name: install.ps1 (Windows PowerShell 5.1, then PowerShell 7 over it, then uninstall)
-        if: runner.os == 'Windows'
-        shell: bash
-        run: |
-          python scripts/package.py --no-linux
-          zip=$(ls dist/QSWATMOD2.*[0-9].zip)
-          plugins="$RUNNER_TEMP\\plugins"
-          powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1 -Zip "$zip" -PluginsDir "$plugins"
-          test -f "$plugins/QSWATMOD2/metadata.txt"
-          test -f "$plugins/QSWATMOD2/pyfolder/create_swatmf.py"
-          test -f "$plugins/QSWATMOD2/FOLDER_FOR_COPY/SWAT-MODFLOW/swatmf_rel230818.exe"
-          pwsh -NoProfile -File install.ps1 -Zip "$zip" -PluginsDir "$plugins"
-          powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1 -Uninstall -PluginsDir "$plugins"
-          test ! -e "$plugins/QSWATMOD2"
-
   package:
     name: package and install.sh
     runs-on: ubuntu-latest
@@ -70,9 +56,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: SWAT-MODFLOW3 program for Linux
+      - name: SWAT-MODFLOW3 programs (Linux and Windows)
         env:
           GH_TOKEN: ${{ github.token }}
+          SWATMF3_PLATFORM: all
         run: scripts/fetch_swatmf3.sh
 
       - name: Build and check the ZIPs
@@ -98,6 +85,62 @@ jobs:
           name: dist
           path: dist/
           retention-days: 7
+
+  windows:
+    name: Windows install and model run
+    needs: package
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: SWAT-MODFLOW3 regression check and example model (data/MiddleBosque1000 only)
+        uses: actions/checkout@v4
+        with:
+          repository: spark-hydro/SWAT-MODFLOW3
+          path: swatmf3-repo
+          sparse-checkout: |
+            scripts
+            data/MiddleBosque1000
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download the ZIPs
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: install.ps1 (Windows PowerShell 5.1)
+        shell: bash
+        run: |
+          zip=$(ls dist/QSWATMOD2.*[0-9].zip)
+          plugins="$RUNNER_TEMP\\plugins"
+          powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1 -Zip "$zip" -PluginsDir "$plugins"
+          exe="$plugins/QSWATMOD2/FOLDER_FOR_COPY/SWAT-MODFLOW/swatmf3.exe"
+          test -f "$plugins/QSWATMOD2/metadata.txt"
+          test -f "$plugins/QSWATMOD2/pyfolder/create_swatmf.py"
+          test -f "$exe"
+          "$exe" --version
+
+      - name: Run the installed swatmf3.exe on the example model (regress.py)
+        shell: bash
+        run: |
+          exe="$RUNNER_TEMP/plugins/QSWATMOD2/FOLDER_FOR_COPY/SWAT-MODFLOW/swatmf3.exe"
+          python swatmf3-repo/scripts/regress.py "$exe" swatmf3-repo/data/MiddleBosque1000
+
+      - name: install.ps1 (PowerShell 7 over it), then uninstall
+        shell: bash
+        run: |
+          zip=$(ls dist/QSWATMOD2.*[0-9].zip)
+          plugins="$RUNNER_TEMP\\plugins"
+          pwsh -NoProfile -File install.ps1 -Zip "$zip" -PluginsDir "$plugins"
+          test -f "$plugins/QSWATMOD2/FOLDER_FOR_COPY/SWAT-MODFLOW/swatmf3.exe"
+          powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1 -Uninstall -PluginsDir "$plugins"
+          test ! -e "$plugins/QSWATMOD2"
 
   qgis:
     name: QGIS 3.44 (qgis/qgis image)

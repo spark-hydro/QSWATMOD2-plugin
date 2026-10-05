@@ -3,12 +3,12 @@
 
     python3 scripts/package.py                 # dist/QSWATMOD2.<version>.zip
     python3 scripts/package.py --xml           # also dist/plugins.xml
-    python3 scripts/package.py --linux --xml   # smaller ZIP for Linux: no Windows programs
+    python3 scripts/package.py --linux --xml   # smaller ZIP for Linux: no Windows program
     python3 scripts/package.py --check dist/QSWATMOD2.2.11.0.zip
 
 The ZIP has one top-level folder, QSWATMOD2/ (QGIS needs the folder name to match the
-plugin), with metadata.txt directly inside it. The Linux program (swatmf3) comes from
-scripts/fetch_swatmf3.sh; the Windows programs are the ones kept in FOLDER_FOR_COPY.
+plugin), with metadata.txt directly inside it. The programs come from the SWAT-MODFLOW3
+release (scripts/fetch_swatmf3.sh): swatmf3 (Linux) and swatmf3.exe (Windows).
 
 The same ZIP works on Windows, Linux and macOS: QGIS "Install from ZIP" ignores file
 permissions, so the plugin sets the execute bit itself when it runs the model.
@@ -35,8 +35,10 @@ EXCLUDE = [
     "*.code-workspace", "plugin_upload.py", "dump.py", "README.md", "resources.qrc",
     "i18n/*.ts",
 ]
-LINUX_EXE = "FOLDER_FOR_COPY/SWAT-MODFLOW/swatmf3"
-WINDOWS_EXE = "FOLDER_FOR_COPY/*/*.exe"   # the Windows programs (about 20 MB)
+PROGRAMS_DIR = "FOLDER_FOR_COPY/SWAT-MODFLOW"
+LINUX_EXE = PROGRAMS_DIR + "/swatmf3"
+WINDOWS_EXE = PROGRAMS_DIR + "/swatmf3.exe"
+WINDOWS_EXES = "FOLDER_FOR_COPY/*/*.exe"   # every Windows program (left out of the Linux ZIP)
 # fixed time stamp: the same input gives the same ZIP (and the same checksum)
 STAMP = (2000, 1, 1, 0, 0, 0)
 
@@ -62,7 +64,7 @@ def files(linux_only=False):
                              if not excluded(d if rel_dir == "." else rel_dir + "/" + d))
         for name in sorted(filenames):
             rel = name if rel_dir == "." else rel_dir + "/" + name
-            if not excluded(rel) and not (linux_only and fnmatch.fnmatch(rel, WINDOWS_EXE)):
+            if not excluded(rel) and not (linux_only and fnmatch.fnmatch(rel, WINDOWS_EXES)):
                 out.append(rel)
     return sorted(out)
 
@@ -73,11 +75,14 @@ def zip_name(meta, linux_only):
     return "{}.{}{}.zip".format(PLUGIN, meta["version"], "-linux" if linux_only else "")
 
 
-def build(dist, need_linux=True, linux_only=False):
+def build(dist, need_programs=True, linux_only=False):
     meta = read_metadata()
-    if need_linux and not os.path.isfile(os.path.join(SRC, LINUX_EXE)):
-        sys.exit("Linux program missing: run scripts/fetch_swatmf3.sh first "
-                 "(or --no-linux to build without it)")
+    needed = [LINUX_EXE] if linux_only else [LINUX_EXE, WINDOWS_EXE]
+    missing = [n for n in needed if not os.path.isfile(os.path.join(SRC, n))]
+    if need_programs and missing:
+        sys.exit("SWAT-MODFLOW3 program missing: {}\nrun {} first (or --no-programs to build without)".format(
+            ", ".join(missing),
+            "SWATMF3_PLATFORM=all scripts/fetch_swatmf3.sh" if not linux_only else "scripts/fetch_swatmf3.sh"))
     os.makedirs(dist, exist_ok=True)
     path = os.path.join(dist, zip_name(meta, linux_only))
     with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
@@ -167,7 +172,8 @@ def main(argv=None):
                     help="Linux ZIP: leave out the Windows programs (writes plugins-linux.xml)")
     ap.add_argument("--base-url", help="folder URL of the ZIP in plugins.xml (default: the GitHub "
                     "release of the tag; for tests or a mirror)")
-    ap.add_argument("--no-linux", action="store_true", help="do not require the Linux program")
+    ap.add_argument("--no-programs", action="store_true",
+                    help="do not require the SWAT-MODFLOW3 programs (tests, layout checks)")
     ap.add_argument("--check", metavar="ZIP", help="only check an existing ZIP")
     args = ap.parse_args(argv)
 
@@ -176,7 +182,7 @@ def main(argv=None):
         print("\n".join(problems) if problems else "{}: OK".format(args.check))
         return 1 if problems else 0
 
-    path, meta = build(args.dist, need_linux=not args.no_linux, linux_only=args.linux)
+    path, meta = build(args.dist, need_programs=not args.no_programs, linux_only=args.linux)
     problems = check(path)
     if problems:
         print("\n".join(problems), file=sys.stderr)

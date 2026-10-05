@@ -18,8 +18,8 @@ class PackageTest(unittest.TestCase):
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
         cls.meta = package.read_metadata()
-        cls.full, _ = package.build(os.path.join(cls.tmp.name, "a"), need_linux=False)
-        cls.linux, _ = package.build(os.path.join(cls.tmp.name, "b"), need_linux=False, linux_only=True)
+        cls.full, _ = package.build(os.path.join(cls.tmp.name, "a"), need_programs=False)
+        cls.linux, _ = package.build(os.path.join(cls.tmp.name, "b"), need_programs=False, linux_only=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -47,7 +47,7 @@ class PackageTest(unittest.TestCase):
         self.assertLess(len(linux), len(full))
 
     def test_reproducible(self):
-        again, _ = package.build(os.path.join(self.tmp.name, "c"), need_linux=False)
+        again, _ = package.build(os.path.join(self.tmp.name, "c"), need_programs=False)
         digest = lambda p: hashlib.sha256(open(p, "rb").read()).hexdigest()
         self.assertEqual(digest(self.full), digest(again))
 

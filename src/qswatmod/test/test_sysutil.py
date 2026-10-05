@@ -49,16 +49,30 @@ class FindExeTest(unittest.TestCase):
         self.assertIsNone(sysutil.find_swatmf_exe(self.dir, "linux"))
         self.assertIsNone(sysutil.find_swatmf_exe(self.dir, "win32"))
 
-    def test_windows_keeps_old_priority(self):
-        _touch(self.dir, "SWAT-MODFLOW3.exe", "swatmf3")
+    def test_windows_old_programs_keep_their_priority(self):
+        _touch(self.dir, "SWAT-MODFLOW3.exe")
         self.assertEqual(os.path.basename(sysutil.find_swatmf_exe(self.dir, "win32")),
                          "SWAT-MODFLOW3.exe")
         _touch(self.dir, "swatmf_rel230818.exe")
         self.assertEqual(os.path.basename(sysutil.find_swatmf_exe(self.dir, "win32")),
                          "swatmf_rel230818.exe")
 
+    def test_windows_prefers_the_release_program(self):
+        _touch(self.dir, "swatmf_rel230818.exe", "SWAT-MODFLOW3.exe",
+               "swatmf3-v1.2.9-gnu-win_amd64-Rel.exe", "swatmf3-v1.2.10-gnu-win_amd64-Rel.exe",
+               "swatmf3-v1.2.10-gnu-win_amd64-Rel.zip")
+        self.assertEqual(os.path.basename(sysutil.find_swatmf_exe(self.dir, "win32")),
+                         "swatmf3-v1.2.10-gnu-win_amd64-Rel.exe")
+        _touch(self.dir, "swatmf3.exe")
+        self.assertEqual(os.path.basename(sysutil.find_swatmf_exe(self.dir, "win32")),
+                         "swatmf3.exe")
+
+    def test_windows_ignores_the_linux_program(self):
+        _touch(self.dir, "swatmf3", "swatmf3-v1.2.5-gnu-lin_x86_64-Rel")
+        self.assertIsNone(sysutil.find_swatmf_exe(self.dir, "win32"))
+
     def test_linux_ignores_exe_files(self):
-        _touch(self.dir, "SWAT-MODFLOW3.exe", "swatmf_rel230818.exe")
+        _touch(self.dir, "SWAT-MODFLOW3.exe", "swatmf_rel230818.exe", "swatmf3.exe")
         self.assertIsNone(sysutil.find_swatmf_exe(self.dir, "linux"))
 
     def test_linux_prefers_plain_name_then_newest_release(self):
